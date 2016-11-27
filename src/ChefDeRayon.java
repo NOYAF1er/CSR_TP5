@@ -16,10 +16,7 @@ public class ChefDeRayon extends Thread  {
 	ArrayList<Rayon> listeRayons;
 	
 	/** Nombre maximal d'exemplaire de produit possible de transporter */
-	private final int QTE_MAX_EXEMPLAIRE = 5;
-	
-	/** Stock maximum des rayons */
-	private int stockMaxRayon;
+	private final int QTE_MAX_EXEMPLAIRE_TRANSPORTABLE = 5;
 	
 	/**
 	 * Constructeur
@@ -29,14 +26,12 @@ public class ChefDeRayon extends Thread  {
 	 * 
 	 * Aussi définit
 	 * la liste de rayon à approvisionner,
-	 * le stock maximum des rayons
 	 * 
 	 * @param listeRayons
 	 */
-	public ChefDeRayon(ArrayList<Rayon> listeRayons, int stockMaxRayon){
+	public ChefDeRayon(ArrayList<Rayon> listeRayons){
 		this.setDaemon(true);
 		this.listeRayons = listeRayons;
-		this.stockMaxRayon = stockMaxRayon;
 	}
 	
 	public void run(){
@@ -48,8 +43,8 @@ public class ChefDeRayon extends Thread  {
 	}
 	
 	/**
-	 * Approvisionne le rayon définie si nécessaire dans les limites des exemplaires 
-	 * en possession du chef de rayons
+	 * Approvisionne le rayon définie, si nécessaire, dans les limites des exemplaires 
+	 * en possession du chef de rayons et de la capacité du rayon
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -57,16 +52,15 @@ public class ChefDeRayon extends Thread  {
 		Thread.sleep(200); // Simule le temps de marche entre les rayons et entre l'entrepot et le 1er rayon
 		
 		int stockDispoRayon = rayon.getStockDisponible();
-		int besoin = stockMaxRayon - stockDispoRayon;
+		int besoin = rayon.getCapacite() - stockDispoRayon;
 		
 		if(besoin > 0){
-			if(besoin > QTE_MAX_EXEMPLAIRE){
-				rayon.setStockDisponible(stockDispoRayon + QTE_MAX_EXEMPLAIRE);
+			if(besoin > QTE_MAX_EXEMPLAIRE_TRANSPORTABLE){
+				rayon.setStockDisponible(stockDispoRayon + QTE_MAX_EXEMPLAIRE_TRANSPORTABLE);
 			}
 			else{
 				rayon.setStockDisponible(stockDispoRayon + besoin);
 			}
-			//System.out.println("Chef de rayon: Etat du rayon " + rayon.getProduit() + " après mon passage: " + rayon.getStockDisponible());
 			this.notifyAll();
 		}
 		System.out.println("Chef de rayon: Etat du rayon " + rayon.getProduit() + " après mon passage: " + rayon.getStockDisponible());

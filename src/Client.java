@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Classe Client
@@ -15,13 +17,16 @@ import java.util.Map;
  */
 public class Client extends Thread {
 	/** Liste de courses contenant les produits et leurs quantités */
-	Map<String, Integer> listeDeCourses;
+	Map<Produits, Integer> listeDeCourses;
 	
 	/** File de chariot du supermarché */
 	FileDeChariot fileDeChariot;
 	
 	/** Liste des rayons du supermarché */
 	ArrayList<Rayon> listeRayons;
+	
+	/** Les états du client */
+	String etat;
 	
 	/**
 	 * Constructeur
@@ -30,21 +35,27 @@ public class Client extends Thread {
 	 * un file de chariot,
 	 * une liste de rayon
 	 * 
-	 * @param listeDeCourses
 	 * @param fileDeChariot
 	 * @param listeRayons
 	 */
-	public Client(Map<String, Integer> listeDeCourses, FileDeChariot fileDeChariot, ArrayList<Rayon> listeRayon) {
-		this.listeDeCourses = listeDeCourses;
+	public Client(FileDeChariot fileDeChariot, ArrayList<Rayon> listeRayon) {
 		this.fileDeChariot = fileDeChariot;
 		this.listeRayons = listeRayon;
+		this.etat = "INITIALISATION";
+		
+		this.listeDeCourses = new HashMap<>();
+		this.setListeDeCourses();
+		
 	}
 
 	public void run() {
 		try {
+			etat = "ATTENTE_CHARIOT";
 			this.emprunterChariot();
 			//Parcours des rayons
+			etat = "EN_COURSE";
 			for(Rayon rayon: listeRayons){
+				etat = "ATTENTE_PRODUIT";
 				prendreProduits(rayon);
 				Thread.sleep(300); // Simule le temps de marche entre les rayons
 			}
@@ -53,6 +64,26 @@ public class Client extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Définit une liste de courses de façon aléatoire
+	 */
+	public void setListeDeCourses(){
+		Random rd = new Random();
+		
+		this.listeDeCourses.put(Produits.SUCRE, rd.nextInt(10));
+		this.listeDeCourses.put(Produits.FARINE, rd.nextInt(10));
+		this.listeDeCourses.put(Produits.BEURRE, rd.nextInt(10));
+		this.listeDeCourses.put(Produits.LAIT, rd.nextInt(10));
+	}
+	
+	/**
+	 * Définit une liste de courses à partir de celle indiqué
+	 * @param listeDeCourses Liste de courses
+	 */
+	public void setListeDeCourses(Map<Produits, Integer> listeDeCourses){
+		this.listeDeCourses = listeDeCourses;
+	}	
 
 	/**
 	 * Emprunte un chariot dans la file de chariot
@@ -82,7 +113,7 @@ public class Client extends Thread {
 	 * @throws InterruptedException
 	 */
 	public void prendreProduits(Rayon rayon) throws InterruptedException{
-		String produitRayon = rayon.getProduit();
+		Produits produitRayon = rayon.getProduit();
 		int qteProduit = listeDeCourses.get(produitRayon);
 		System.out.println(Thread.currentThread().getName() + " Liste Courses: " + produitRayon + " = " + qteProduit);
 		while(qteProduit > 0){
