@@ -1,7 +1,7 @@
 /**
  * Classe File de chariot
  * 
- * GÃ¨re le stock disponible dans la file de chariot en permettant le destockage
+ * Gère le stock disponible dans la file de chariot en permettant le destockage
  * et le stockage de chariot
  * 
  * @author Yannick N'GUESSAN
@@ -20,16 +20,16 @@ public class FileDeChariot {
 	 *            Stock initial
 	 */
 	public FileDeChariot(int stockInit) {
-		this.setStock(stockInit);
+		this.setStockDisponible(stockInit);
 	}
 
 	/**
-	 * DÃ©finit le stock de chariot disponible
+	 * Définit le stock de chariot disponible
 	 * 
 	 * @param stock
-	 *            Nouveau stock Ã  dÃ©finir
+	 *            Nouveau stock à définir
 	 */
-	public void setStock(int stock) {
+	public void setStockDisponible(int stock) {
 		this.stockDisponible = stock;
 	}
 
@@ -38,20 +38,20 @@ public class FileDeChariot {
 	 * 
 	 * @return Stock de chariot
 	 */
-	public int getStock() {
+	public int getStockDisponible() {
 		return stockDisponible;
 	}
 
 	/**
 	 * Affiche l'etat du stock de la file de chariot
 	 */
-	public void afficher() {
-		System.out.println(Thread.currentThread().getName() + ": AprÃ¨s action sur le file de stock, il contient "
+	public void afficher(String action) {
+		System.out.println(Thread.currentThread().getName() + ": Après "+ action + " sur la file de chariots, il contient "
 				+ stockDisponible + " chariot(s).");
 	}
 
 	/**
-	 * RÃ©tire un chariot Ã  la fois du stock dÃ¨s que cela est possible
+	 * Rétire un chariot à la fois du stock dès que cela est possible
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -61,11 +61,11 @@ public class FileDeChariot {
 			this.wait();
 		}
 		this.stockDisponible--;
-		this.afficher();// Affiche le niveau de stock du site
+		this.afficher("emprunt");// Affiche le niveau de stock
 	}
 
 	/**
-	 * Ajoute un chariot Ã  la fois du stock dÃ¨s que cela est possible
+	 * Ajoute un chariot à la fois du stock dès que cela est possible
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -73,7 +73,7 @@ public class FileDeChariot {
 
 		this.stockDisponible++;
 		this.notifyAll();
-		this.afficher();// Affiche le niveau de stock du site
+		this.afficher("restitution");// Affiche le niveau de stock
 	}
 
 }

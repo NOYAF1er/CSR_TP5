@@ -5,11 +5,11 @@ CLASSE PRINCIPALE
 
 THREADS
 	Client
-
-AUTRES
-	FileDeChariot
-	Rayon
 	ChefDeRayon
+
+PARTAGES
+	FileDeChariot (stock de chariot)
+	Rayon (stock de produit)
 
 
 
