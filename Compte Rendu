@@ -5,13 +5,14 @@ CLASSE PRINCIPALE
 
 THREADS
 	Client
-	ChefDeRayon
+	ChefDeRayon (deamon)
 
 PARTAGES
 	FileDeChariot (stock de chariot)
 	Rayon (stock de produit)
 
-
+ENUMERATION
+	Produits
 
 
 
