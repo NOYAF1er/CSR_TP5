@@ -20,25 +20,30 @@ public class Supermarche {
 	static final int TPS_MARCHE_CLT = 300;
 	static final int TPS_PLACEMENT_CLT = 20;
 	
-	static final int NB_CLT = 5;
+	static final int NB_CLIENT = 5;
 	private static List<Client> listeClients;
 	
 	public static void main(String[] args) {
+		//Création du file de chariot
 		FileDeChariot fileDeChariot = new FileDeChariot(NB_CHARIOTS);
 		
+		//Création de la liste des rayons (contenant les rayons créés)
 		List<Rayon> listeRayons = new ArrayList<>();
 		for(Produits produit: Produits.values()){
 			listeRayons.add(new Rayon(produit));
 		}
 		
+		//Création et mise en activité du chef de rayon
 		ChefDeRayon chefDeRayon = new ChefDeRayon(listeRayons);
 		chefDeRayon.start();
 		
+		//Création des clients
 		listeClients = new ArrayList<>();
-		for(int i = 0; i < NB_CLT; i++){
+		for(int i = 0; i < NB_CLIENT; i++){
 			listeClients.add(new Client(fileDeChariot, listeRayons));
 		}
 		
+		//Mise en activité des clients
 		for(Client client: listeClients){
 			client.start();
 		}
