@@ -45,7 +45,6 @@ public class Client extends Thread {
 		
 		this.listeDeCourses = new HashMap<>();
 		this.setListeDeCourses();
-		
 	}
 	
 	/**
@@ -63,7 +62,7 @@ public class Client extends Thread {
 			for(Rayon rayon: listeRayons){
 				etat = "ATTENTE_PRODUIT";
 				prendreProduits(rayon);
-				Thread.sleep(300); // Simule le temps de marche entre les rayons
+				Thread.sleep(Supermarche.TPS_MARCHE_CLT); // Simule le temps de marche entre les rayons
 			}
 			this.restituerChariot();
 		} catch (InterruptedException e) {
@@ -97,7 +96,6 @@ public class Client extends Thread {
 	 * @throws InterruptedException
 	 */
 	public void emprunterChariot() throws InterruptedException {
-		System.out.println(Thread.currentThread().getName() + "_Client sur le point d'emprunter un chariot ");
 		fileDeChariot.deStocker();
 	}
 
@@ -107,7 +105,6 @@ public class Client extends Thread {
 	 * @throws InterruptedException
 	 */
 	public void restituerChariot() throws InterruptedException {
-		System.out.println(Thread.currentThread().getName() + "_Client sur le point de restituer un chariot ");
 		fileDeChariot.stocker();
 	}
 	
@@ -118,12 +115,11 @@ public class Client extends Thread {
 	 * @param rayon Rayon sur lequel sera retiré le produit
 	 * @throws InterruptedException
 	 */
-	public void prendreProduits(Rayon rayon) throws InterruptedException{
+	public synchronized void prendreProduits(Rayon rayon) throws InterruptedException{
 		Produits produitRayon = rayon.getProduit();
 		int qteProduit = listeDeCourses.get(produitRayon);
 		System.out.println(Thread.currentThread().getName() + " Liste Courses: " + produitRayon + " = " + qteProduit);
 		while(qteProduit > 0){
-			System.out.println(Thread.currentThread().getName() + "_Client sur le point de prendre un produit sur le rayon "+ rayon.getProduit());
 			rayon.deStocker();
 			qteProduit--;
 		}	

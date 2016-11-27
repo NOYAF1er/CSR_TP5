@@ -43,25 +43,17 @@ public class FileDeChariot {
 	}
 
 	/**
-	 * Affiche l'etat du stock de la file de chariot
-	 */
-	public void afficher(String action) {
-		System.out.println(Thread.currentThread().getName() + ": Après "+ action + " sur la file de chariots, il contient "
-				+ stockDisponible + " chariot(s).");
-	}
-
-	/**
 	 * Rétire un chariot à la fois du stock dès que cela est possible
 	 * 
 	 * @throws InterruptedException
 	 */
 	public synchronized void deStocker() throws InterruptedException {
-
 		while (stockDisponible == 0) {
+			this.afficher("En attente");// Affiche le niveau de stock
 			this.wait();
 		}
 		this.stockDisponible--;
-		this.afficher("emprunt");// Affiche le niveau de stock
+		this.afficher("Emprunt");// Affiche le niveau de stock
 	}
 
 	/**
@@ -70,10 +62,17 @@ public class FileDeChariot {
 	 * @throws InterruptedException
 	 */
 	public synchronized void stocker() throws InterruptedException {
-
 		this.stockDisponible++;
 		this.notifyAll();
-		this.afficher("restitution");// Affiche le niveau de stock
+		this.afficher("Restitution");// Affiche le niveau de stock
+	}
+	
+	/**
+	 * Affiche l'etat du stock de la file de chariot
+	 */
+	public void afficher(String action) {
+		System.out.println(Thread.currentThread().getName() + ": "+ action + " sur la file de chariots, il contient "
+				+ stockDisponible + " chariot(s).");
 	}
 
 }

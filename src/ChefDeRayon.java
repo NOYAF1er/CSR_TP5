@@ -53,7 +53,7 @@ public class ChefDeRayon extends Thread  {
 	 * @throws InterruptedException
 	 */
 	public synchronized void approvisionner(Rayon rayon) throws InterruptedException {
-		Thread.sleep(200); // Simule le temps de marche entre les rayons et entre l'entrepot et le 1er rayon
+		Thread.sleep(Supermarche.TPS_CR_DEPLACEMENT_ENTRE_RAYON); // Simule le temps de marche entre les rayons et entre l'entrepot et le 1er rayon
 		
 		int stockDispoRayon = rayon.getStockDisponible();
 		int besoin = rayon.getCapacite() - stockDispoRayon;
@@ -67,7 +67,6 @@ public class ChefDeRayon extends Thread  {
 			}
 			this.notifyAll();
 		}
-		System.out.println("Chef de rayon: Etat du rayon " + rayon.getProduit() + " après mon passage: " + rayon.getStockDisponible());
 	}
 	
 	/**
@@ -80,7 +79,7 @@ public class ChefDeRayon extends Thread  {
 		for(int i = 0, t = listeRayons.size(); i < t; i = (i+1) % t) {
 			approvisionner(listeRayons.get(i));
 			if(i == t){
-				Thread.sleep(500);//Simule le reapprovisionnement à l'entrepot
+				Thread.sleep(Supermarche.TPS_CR_REAPPROVISIONNEMENT);//Simule le reapprovisionnement à l'entrepot
 			}
 		}
 	}

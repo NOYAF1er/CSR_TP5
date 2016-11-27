@@ -14,7 +14,7 @@ public class Supermarche {
 	static final int RAYON_STOCK_INIT = 5;
 	static final int RAYON_STOCK_MAX = 10;
 	static final int TAILLE_TAPIS = 5;
-	static final int NB_CHARIOTS = 2;
+	static final int NB_CHARIOTS = 3;
 	static final int TPS_CR_REAPPROVISIONNEMENT = 500;
 	static final int TPS_CR_DEPLACEMENT_ENTRE_RAYON = 200;
 	static final int TPS_MARCHE_CLT = 300;

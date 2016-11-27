@@ -68,6 +68,7 @@ public class Rayon {
 	public synchronized void setStockDisponible(int stock) {
 		this.stockDisponible = (stock > capacite) ? capacite : stock;
 		this.notifyAll();
+		this.afficher("Approvisionnement");// Affiche le niveau de stock
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class Rayon {
 		if (stockDisponible < capacite) {
 			this.stockDisponible++;
 			this.notifyAll();
-			this.afficher("depot");// Affiche le niveau de stock
+			this.afficher("Approvisionnement");// Affiche le niveau de stock
 		}
 	}
 	
@@ -88,17 +89,18 @@ public class Rayon {
 	 */
 	public synchronized void deStocker() throws InterruptedException {
 		while (stockDisponible == 0) {
+			afficher(" En attente ");
 			this.wait();
 		}
 		this.stockDisponible--;
-		this.afficher("retrait");// Affiche le niveau de stock
+		this.afficher("Retrait");// Affiche le niveau de stock
 	}
 	
 	/**
 	 * Affiche l'etat du stock de produit du rayon
 	 */
 	public void afficher(String action) {
-		System.out.println(Thread.currentThread().getName() + ": Après " + action + " sur le rayon " + produit
+		System.out.println(Thread.currentThread().getName() + ": " + action + " sur le rayon " + produit
 				+ ", il contient " + stockDisponible + " produit(s)");
 	}
 	
