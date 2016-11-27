@@ -30,10 +30,10 @@ public class Rayon {
 	 *            Stock maximun du rayon
 	 * 
 	 */
-	public Rayon(Produits produit, int stockInitiale, int capacite) {
+	public Rayon(Produits produit) {
 		this.produit = produit;
-		this.stockDisponible = stockInitiale;
-		this.capacite = capacite;
+		this.stockDisponible = Supermarche.RAYON_STOCK_INIT;
+		this.capacite = Supermarche.RAYON_STOCK_MAX;
 	}
 
 	/**

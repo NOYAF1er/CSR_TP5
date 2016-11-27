@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -23,7 +23,7 @@ public class Client extends Thread {
 	FileDeChariot fileDeChariot;
 	
 	/** Liste des rayons du supermarché */
-	ArrayList<Rayon> listeRayons;
+	List<Rayon> listeRayons;
 	
 	/** Les états du client */
 	String etat;
@@ -38,7 +38,7 @@ public class Client extends Thread {
 	 * @param fileDeChariot
 	 * @param listeRayons
 	 */
-	public Client(FileDeChariot fileDeChariot, ArrayList<Rayon> listeRayon) {
+	public Client(FileDeChariot fileDeChariot, List<Rayon> listeRayon) {
 		this.fileDeChariot = fileDeChariot;
 		this.listeRayons = listeRayon;
 		this.etat = "INITIALISATION";
@@ -47,7 +47,13 @@ public class Client extends Thread {
 		this.setListeDeCourses();
 		
 	}
-
+	
+	/**
+	 * Déroulement du thread
+	 * Emprunte un chariot
+	 * Parcours tous les rayons pour recupérer les produits de sa liste de courses
+	 * Restitue le chariot
+	 */
 	public void run() {
 		try {
 			etat = "ATTENTE_CHARIOT";

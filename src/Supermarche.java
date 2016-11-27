@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe principale de l'application
@@ -19,35 +20,29 @@ public class Supermarche {
 	static final int TPS_MARCHE_CLT = 300;
 	static final int TPS_PLACEMENT_CLT = 20;
 	
+	static final int NB_CLT = 5;
+	private static List<Client> listeClients;
+	
 	public static void main(String[] args) {
 		FileDeChariot fileDeChariot = new FileDeChariot(NB_CHARIOTS);
 		
-		Rayon rayonSucre = new Rayon(Produits.SUCRE, RAYON_STOCK_INIT, RAYON_STOCK_MAX);
-		Rayon rayonFarine = new Rayon(Produits.FARINE, RAYON_STOCK_INIT, RAYON_STOCK_MAX);
-		Rayon rayonBeurre = new Rayon(Produits.BEURRE, RAYON_STOCK_INIT, RAYON_STOCK_MAX);
-		Rayon rayonLait = new Rayon(Produits.LAIT, RAYON_STOCK_INIT, RAYON_STOCK_MAX);
-		
-		ArrayList<Rayon> listeRayons = new ArrayList<>();
-		listeRayons.add(rayonLait);
-		listeRayons.add(rayonBeurre);
-		listeRayons.add(rayonFarine);
-		listeRayons.add(rayonSucre);
+		List<Rayon> listeRayons = new ArrayList<>();
+		for(Produits produit: Produits.values()){
+			listeRayons.add(new Rayon(produit));
+		}
 		
 		ChefDeRayon chefDeRayon = new ChefDeRayon(listeRayons);
 		chefDeRayon.start();
 		
-		Client client1 = new Client(fileDeChariot, listeRayons);
-		Client client2 = new Client(fileDeChariot, listeRayons);
-		Client client3 = new Client(fileDeChariot, listeRayons);
-		Client client4 = new Client(fileDeChariot, listeRayons);
-		Client client5 = new Client(fileDeChariot, listeRayons);
+		listeClients = new ArrayList<>();
+		for(int i = 0; i < NB_CLT; i++){
+			listeClients.add(new Client(fileDeChariot, listeRayons));
+		}
 		
-		client1.start();
-		client2.start();
-		client3.start();
-		client4.start();
-		client5.start();
-
+		for(Client client: listeClients){
+			client.start();
+		}
+		
 	}
 
 }

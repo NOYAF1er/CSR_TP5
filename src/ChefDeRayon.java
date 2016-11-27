@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe Chef de rayon
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class ChefDeRayon extends Thread  {
 	
 	/** Liste des rayons du supermarché */
-	ArrayList<Rayon> listeRayons;
+	List<Rayon> listeRayons;
 	
 	/** Nombre maximal d'exemplaire de produit possible de transporter */
 	private final int QTE_MAX_EXEMPLAIRE_TRANSPORTABLE = 5;
@@ -29,11 +29,15 @@ public class ChefDeRayon extends Thread  {
 	 * 
 	 * @param listeRayons
 	 */
-	public ChefDeRayon(ArrayList<Rayon> listeRayons){
+	public ChefDeRayon(List<Rayon> listeRayons){
 		this.setDaemon(true);
 		this.listeRayons = listeRayons;
 	}
 	
+	/**
+	 * Déroulement du thread
+	 * Faire la ronde des rayons
+	 */
 	public void run(){
 		try {
 			this.parcourir();
