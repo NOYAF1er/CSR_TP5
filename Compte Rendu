@@ -6,6 +6,7 @@ CLASSE PRINCIPALE
 THREADS
 	Client
 	ChefDeRayon (deamon)
+	EmployeDeCaisse
 
 PARTAGES
 	FileDeChariot (stock de chariot)

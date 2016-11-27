@@ -1,4 +1,4 @@
 
-public class EmployeDeCaisse {
+public class EmployeDeCaisse extends Thread {
 
 }
