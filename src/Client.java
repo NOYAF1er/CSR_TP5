@@ -6,9 +6,9 @@ import java.util.Random;
 /**
  * Classe Client
  * 
- * Permet à un client de faire ses courses en magasin en lui permettant
+ * Permet ï¿½ un client de faire ses courses en magasin en lui permettant
  * d'emprunter et restituer un chariot dans une file de chariots
- * d'avoir une liste de courses contenant les produits et la quantité souhaité
+ * d'avoir une liste de courses contenant les produits et la quantitï¿½ souhaitï¿½
  * 
  * 
  * @author Yannick N'GUESSAN
@@ -16,21 +16,24 @@ import java.util.Random;
  *
  */
 public class Client extends Thread {
-	/** Liste de courses contenant les produits et leurs quantités */
+	/** Liste de courses contenant les produits et leurs quantitï¿½s */
 	Map<Produits, Integer> listeDeCourses;
 	
-	/** File de chariot du supermarché */
+	/** File de chariot du supermarchï¿½ */
 	FileDeChariot fileDeChariot;
 	
-	/** Liste des rayons du supermarché */
+	/** Liste des rayons du supermarchï¿½ */
 	List<Rayon> listeRayons;
 	
-	/** Les états du client */
+	/** Caisse oÃ¹ se diriger pour le paiement */
+	Caisse caisse;
+	
+	/** Les ï¿½tats du client */
 	String etat;
 	
 	/**
 	 * Constructeur
-	 * Définit 
+	 * Dï¿½finit 
 	 * une liste de courses, 
 	 * un file de chariot,
 	 * une liste de rayon
@@ -38,9 +41,10 @@ public class Client extends Thread {
 	 * @param fileDeChariot
 	 * @param listeRayons
 	 */
-	public Client(FileDeChariot fileDeChariot, List<Rayon> listeRayon) {
+	public Client(FileDeChariot fileDeChariot, List<Rayon> listeRayon, Caisse caisse) {
 		this.fileDeChariot = fileDeChariot;
 		this.listeRayons = listeRayon;
+		this.caisse = caisse;
 		this.etat = "INITIALISATION";
 		
 		this.listeDeCourses = new HashMap<>();
@@ -48,9 +52,9 @@ public class Client extends Thread {
 	}
 	
 	/**
-	 * Déroulement du thread
+	 * Dï¿½roulement du thread
 	 * Emprunte un chariot
-	 * Parcours tous les rayons pour recupérer les produits de sa liste de courses
+	 * Parcours tous les rayons pour recupï¿½rer les produits de sa liste de courses
 	 * Restitue le chariot
 	 */
 	public void run() {
@@ -64,14 +68,24 @@ public class Client extends Thread {
 				prendreProduits(rayon);
 				Thread.sleep(Supermarche.TPS_MARCHE_CLT); // Simule le temps de marche entre les rayons
 			}
+			
+			//Passer Ã  la caisse
+			passerAlaCaisse();
+			
+			System.out.println(Thread.currentThread().getName() + " Reglement.");
+			Thread.sleep(5000); //Simule le reglement
+			
+			//Restituer le chariot
 			this.restituerChariot();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
-	
+//	System.out.println(Thread.currentThread().getName() + ": " + action + " sur le rayon " + produit
+//	+ ", il contient " + stockDisponible + " produit(s)");
+
 	/**
-	 * Définit une liste de courses de façon aléatoire
+	 * Dï¿½finit une liste de courses de faï¿½on alï¿½atoire
 	 */
 	public void setListeDeCourses(){
 		Random rd = new Random();
@@ -83,7 +97,7 @@ public class Client extends Thread {
 	}
 	
 	/**
-	 * Définit une liste de courses à partir de celle indiqué
+	 * Dï¿½finit une liste de courses ï¿½ partir de celle indiquï¿½
 	 * @param listeDeCourses Liste de courses
 	 */
 	public void setListeDeCourses(Map<Produits, Integer> listeDeCourses){
@@ -109,10 +123,10 @@ public class Client extends Thread {
 	}
 	
 	/**
-	 * Retire dans un rayon donné, la quantité de produit figurant sur 
+	 * Retire dans un rayon donnï¿½, la quantitï¿½ de produit figurant sur 
 	 * la liste de courses
 	 * 
-	 * @param rayon Rayon sur lequel sera retiré le produit
+	 * @param rayon Rayon sur lequel sera retirï¿½ le produit
 	 * @throws InterruptedException
 	 */
 	public synchronized void prendreProduits(Rayon rayon) throws InterruptedException{
@@ -123,6 +137,27 @@ public class Client extends Thread {
 			rayon.deStocker();
 			qteProduit--;
 		}	
+	}
+	
+	/**
+	 * Poser ses produits les uns aprÃ¨s les autres sur le tapis de la caisse (dans les limites du tapis)
+	 * puis liberer la caisse
+	 * @throws InterruptedException
+	 */
+	public synchronized void passerAlaCaisse() throws InterruptedException{
+		while(!caisse.clientSuivant){
+			System.out.println(Thread.currentThread().getName() + " En attente Ã  la caisse.");
+			this.wait();
+		}
+		System.out.println(Thread.currentThread().getName() + " Passage en caisse.");
+		
+		caisse.setClientSuivant(false); //Signaler que la caisse est occupÃ©e
+		for(Produits produit: listeDeCourses.keySet()){
+			for(int i=0, qtProduit = listeDeCourses.get(produit); i < qtProduit; i++){
+				caisse.charger(produit);
+			}
+		}
+		caisse.setClientSuivant(true); //Signaler que la caisse est libÃ©rÃ©e
 	}
 
 }

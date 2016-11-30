@@ -24,26 +24,33 @@ public class Supermarche {
 	private static List<Client> listeClients;
 	
 	public static void main(String[] args) {
-		//Création du file de chariot
+		//Crï¿½ation du file de chariot
 		FileDeChariot fileDeChariot = new FileDeChariot(NB_CHARIOTS);
 		
-		//Création de la liste des rayons (contenant les rayons créés)
+		//CrÃ©ation de la caisse
+		Caisse caisse = new Caisse();
+		
+		//Crï¿½ation de la liste des rayons (contenant les rayons crï¿½ï¿½s)
 		List<Rayon> listeRayons = new ArrayList<>();
 		for(Produits produit: Produits.values()){
 			listeRayons.add(new Rayon(produit));
 		}
 		
-		//Création et mise en activité du chef de rayon
+		//Crï¿½ation et mise en activitï¿½ du chef de rayon
 		ChefDeRayon chefDeRayon = new ChefDeRayon(listeRayons);
 		chefDeRayon.start();
 		
-		//Création des clients
+		//CrÃ©ation et mise en activitÃ© de l'employÃ© de caisse
+		EmployeDeCaisse employeDeCaisse = new EmployeDeCaisse(caisse);
+		employeDeCaisse.start();
+		
+		//Crï¿½ation des clients
 		listeClients = new ArrayList<>();
 		for(int i = 0; i < NB_CLIENT; i++){
-			listeClients.add(new Client(fileDeChariot, listeRayons));
+			listeClients.add(new Client(fileDeChariot, listeRayons, caisse));
 		}
 		
-		//Mise en activité des clients
+		//Mise en activitï¿½ des clients
 		for(Client client: listeClients){
 			client.start();
 		}

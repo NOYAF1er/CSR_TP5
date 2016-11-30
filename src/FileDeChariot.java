@@ -1,7 +1,7 @@
 /**
  * Classe File de chariot
  * 
- * Gère le stock disponible dans la file de chariot en permettant le destockage
+ * Gï¿½re le stock disponible dans la file de chariot en permettant le destockage
  * et le stockage de chariot
  * 
  * @author Yannick N'GUESSAN
@@ -24,10 +24,10 @@ public class FileDeChariot {
 	}
 
 	/**
-	 * Définit le stock de chariot disponible
+	 * Dï¿½finit le stock de chariot disponible
 	 * 
 	 * @param stock
-	 *            Nouveau stock à définir
+	 *            Nouveau stock ï¿½ dï¿½finir
 	 */
 	public void setStockDisponible(int stock) {
 		this.stockDisponible = stock;
@@ -43,7 +43,7 @@ public class FileDeChariot {
 	}
 
 	/**
-	 * Rétire un chariot à la fois du stock dès que cela est possible
+	 * Rï¿½tire un chariot ï¿½ la fois du stock dï¿½s que cela est possible
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -57,7 +57,7 @@ public class FileDeChariot {
 	}
 
 	/**
-	 * Ajoute un chariot à la fois du stock dès que cela est possible
+	 * Ajoute un chariot ï¿½ la fois du stock dï¿½s que cela est possible
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -71,8 +71,8 @@ public class FileDeChariot {
 	 * Affiche l'etat du stock de la file de chariot
 	 */
 	public void afficher(String action) {
-		System.out.println(Thread.currentThread().getName() + ": "+ action + " sur la file de chariots, il contient "
-				+ stockDisponible + " chariot(s).");
+//		System.out.println(Thread.currentThread().getName() + ": "+ action + " sur la file de chariots, il contient "
+//				+ stockDisponible + " chariot(s).");
 	}
 
 }

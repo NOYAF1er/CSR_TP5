@@ -1,7 +1,7 @@
 /**
  * Classe Rayon
  * 
- * Gère le stock de produit d'un rayon
+ * Gï¿½re le stock de produit d'un rayon
  * 
  * @author Yannick N'GUESSAN
  * @author Christian ADANE
@@ -19,11 +19,11 @@ public class Rayon {
 	private int capacite;
 
 	/**
-	 * Constructeur: Définit le type de produit proposé dans le rayon, le stock
-	 * disponible et la quantité maximale d'exemplaire
+	 * Constructeur: Dï¿½finit le type de produit proposï¿½ dans le rayon, le stock
+	 * disponible et la quantitï¿½ maximale d'exemplaire
 	 * 
 	 * @param produit
-	 *            Produit proposé dans le rayon
+	 *            Produit proposï¿½ dans le rayon
 	 * @param stockInitiale
 	 *            Stock initiale du rayon
 	 * @param capacite
@@ -44,7 +44,7 @@ public class Rayon {
 	}
 
 	/**
-	 * @return La quantité maximal d'exemplaire possible sur ce rayon
+	 * @return La quantitï¿½ maximal d'exemplaire possible sur ce rayon
 	 */
 	public int getCapacite() {
 		return this.capacite;
@@ -60,10 +60,10 @@ public class Rayon {
 	}
 	
 	/**
-	 * Définit le stock de produit disponible
+	 * Dï¿½finit le stock de produit disponible
 	 * 
 	 * @param stock
-	 *            Nouveau stock à définir
+	 *            Nouveau stock ï¿½ dï¿½finir
 	 */
 	public synchronized void setStockDisponible(int stock) {
 		this.stockDisponible = (stock > capacite) ? capacite : stock;
@@ -72,7 +72,7 @@ public class Rayon {
 	}
 
 	/**
-	 * Ajoute un produit à la fois au rayon dès que cela est possible
+	 * Ajoute un produit ï¿½ la fois au rayon dï¿½s que cela est possible
 	 */
 	public synchronized void stocker() {
 		if (stockDisponible < capacite) {
@@ -83,7 +83,7 @@ public class Rayon {
 	}
 	
 	/**
-	 * Rétire un produit à la fois du rayon dès que cela est possible
+	 * Rï¿½tire un produit ï¿½ la fois du rayon dï¿½s que cela est possible
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -100,8 +100,8 @@ public class Rayon {
 	 * Affiche l'etat du stock de produit du rayon
 	 */
 	public void afficher(String action) {
-		System.out.println(Thread.currentThread().getName() + ": " + action + " sur le rayon " + produit
-				+ ", il contient " + stockDisponible + " produit(s)");
+//		System.out.println(Thread.currentThread().getName() + ": " + action + " sur le rayon " + produit
+//				+ ", il contient " + stockDisponible + " produit(s)");
 	}
 	
 }
