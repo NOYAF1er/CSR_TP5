@@ -10,7 +10,9 @@ public class EmployeDeCaisse extends Thread {
 	
 	public void run(){
 		try {
-			recupererProduit();
+			while(true){
+				recupererProduit();
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

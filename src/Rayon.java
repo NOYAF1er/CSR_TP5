@@ -39,7 +39,7 @@ public class Rayon {
 	/**
 	 * @return Le type de produit disponible dans le rayon
 	 */
-	public Produits getProduit() {
+	public synchronized Produits getProduit() {
 		return this.produit;
 	}
 
@@ -100,8 +100,8 @@ public class Rayon {
 	 * Affiche l'etat du stock de produit du rayon
 	 */
 	public void afficher(String action) {
-//		System.out.println(Thread.currentThread().getName() + ": " + action + " sur le rayon " + produit
-//				+ ", il contient " + stockDisponible + " produit(s)");
+		System.out.println(Thread.currentThread().getName() + ": " + action + " sur le rayon " + produit
+				+ ", il contient " + stockDisponible + " produit(s)");
 	}
 	
 }

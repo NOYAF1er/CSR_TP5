@@ -71,8 +71,8 @@ public class FileDeChariot {
 	 * Affiche l'etat du stock de la file de chariot
 	 */
 	public void afficher(String action) {
-//		System.out.println(Thread.currentThread().getName() + ": "+ action + " sur la file de chariots, il contient "
-//				+ stockDisponible + " chariot(s).");
+		System.out.println(Thread.currentThread().getName() + ": "+ action + " sur la file de chariots, stock disponible: "
+				+ stockDisponible + " chariot(s).");
 	}
 
 }

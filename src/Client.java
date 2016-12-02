@@ -60,7 +60,10 @@ public class Client extends Thread {
 	public void run() {
 		try {
 			etat = "ATTENTE_CHARIOT";
+			
+			//Emprunt d'un chariot
 			this.emprunterChariot();
+			
 			//Parcours des rayons
 			etat = "EN_COURSE";
 			for(Rayon rayon: listeRayons){
@@ -69,20 +72,15 @@ public class Client extends Thread {
 				Thread.sleep(Supermarche.TPS_MARCHE_CLT); // Simule le temps de marche entre les rayons
 			}
 			
-			//Passer à la caisse
+			//Passage en caisse
 			passerAlaCaisse();
 			
-			System.out.println(Thread.currentThread().getName() + " Reglement.");
-			Thread.sleep(5000); //Simule le reglement
-			
-			//Restituer le chariot
+			//Restitution du chariot
 			this.restituerChariot();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
-//	System.out.println(Thread.currentThread().getName() + ": " + action + " sur le rayon " + produit
-//	+ ", il contient " + stockDisponible + " produit(s)");
 
 	/**
 	 * D�finit une liste de courses de fa�on al�atoire
@@ -129,10 +127,11 @@ public class Client extends Thread {
 	 * @param rayon Rayon sur lequel sera retir� le produit
 	 * @throws InterruptedException
 	 */
-	public synchronized void prendreProduits(Rayon rayon) throws InterruptedException{
+	public void prendreProduits(Rayon rayon) throws InterruptedException{
 		Produits produitRayon = rayon.getProduit();
 		int qteProduit = listeDeCourses.get(produitRayon);
-		System.out.println(Thread.currentThread().getName() + " Liste Courses: " + produitRayon + " = " + qteProduit);
+		//System.out.println(Thread.currentThread().getName() + " Liste Courses: " + produitRayon + " = " + qteProduit);
+		
 		while(qteProduit > 0){
 			rayon.deStocker();
 			qteProduit--;
@@ -141,23 +140,18 @@ public class Client extends Thread {
 	
 	/**
 	 * Poser ses produits les uns après les autres sur le tapis de la caisse (dans les limites du tapis)
+	 * après avoir vérifié que la caisse soit libre
 	 * puis liberer la caisse
 	 * @throws InterruptedException
 	 */
-	public synchronized void passerAlaCaisse() throws InterruptedException{
-		while(!caisse.clientSuivant){
-			System.out.println(Thread.currentThread().getName() + " En attente à la caisse.");
-			this.wait();
-		}
-		System.out.println(Thread.currentThread().getName() + " Passage en caisse.");
-		
-		caisse.setClientSuivant(false); //Signaler que la caisse est occupée
+	public void passerAlaCaisse() throws InterruptedException{
+		caisse.clientSuivant(); //Vérifie que la caisse est libre
 		for(Produits produit: listeDeCourses.keySet()){
 			for(int i=0, qtProduit = listeDeCourses.get(produit); i < qtProduit; i++){
 				caisse.charger(produit);
 			}
 		}
-		caisse.setClientSuivant(true); //Signaler que la caisse est libérée
+		caisse.reglementClient();
 	}
 
 }

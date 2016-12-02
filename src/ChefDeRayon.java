@@ -4,7 +4,7 @@ import java.util.List;
  * Classe Chef de rayon
  * 
  * Permet au chef de rayon de faire sa ronde en approvisionnant les rayons
- * et en se réapprovisionnant à l'entrepot
+ * et en se rï¿½approvisionnant ï¿½ l'entrepot
  * 
  * @author Yannick N'GUESSAN
  * @author Christian ADANE
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ChefDeRayon extends Thread  {
 	
-	/** Liste des rayons du supermarché */
+	/** Liste des rayons du supermarchï¿½ */
 	List<Rayon> listeRayons;
 	
 	/** Nombre maximal d'exemplaire de produit possible de transporter */
@@ -21,11 +21,11 @@ public class ChefDeRayon extends Thread  {
 	/**
 	 * Constructeur
 	 * 
-	 * Définit ce thread comme étant un deamon thread afin de ne l'arreter que lorsque 
-	 * tous les thread autre que les deamons threads sont arrêtés
+	 * Dï¿½finit ce thread comme ï¿½tant un deamon thread afin de ne l'arreter que lorsque 
+	 * tous les thread autre que les deamons threads sont arrï¿½tï¿½s
 	 * 
-	 * Aussi définit
-	 * la liste de rayon à approvisionner,
+	 * Aussi dï¿½finit
+	 * la liste de rayon ï¿½ approvisionner,
 	 * 
 	 * @param listeRayons
 	 */
@@ -35,7 +35,7 @@ public class ChefDeRayon extends Thread  {
 	}
 	
 	/**
-	 * Déroulement du thread
+	 * Dï¿½roulement du thread
 	 * Faire la ronde des rayons
 	 */
 	public void run(){
@@ -47,12 +47,12 @@ public class ChefDeRayon extends Thread  {
 	}
 	
 	/**
-	 * Approvisionne le rayon définie, si nécessaire, dans les limites des exemplaires 
-	 * en possession du chef de rayons et de la capacité du rayon
+	 * Approvisionne le rayon dï¿½finie, si nï¿½cessaire, dans les limites des exemplaires 
+	 * en possession du chef de rayons et de la capacitï¿½ du rayon
 	 * 
 	 * @throws InterruptedException
 	 */
-	public synchronized void approvisionner(Rayon rayon) throws InterruptedException {
+	public void approvisionner(Rayon rayon) throws InterruptedException {
 		Thread.sleep(Supermarche.TPS_CR_DEPLACEMENT_ENTRE_RAYON); // Simule le temps de marche entre les rayons et entre l'entrepot et le 1er rayon
 		
 		int stockDispoRayon = rayon.getStockDisponible();
@@ -65,13 +65,12 @@ public class ChefDeRayon extends Thread  {
 			else{
 				rayon.setStockDisponible(stockDispoRayon + besoin);
 			}
-			this.notifyAll();
 		}
 	}
 	
 	/**
 	 * Parcour l'ensemble des rayons afin de les approvisionner
-	 * une fois au dernier rayons, il se rend à l'entrepot pour se réapprovisionner avant de reprendre sa ronde
+	 * une fois au dernier rayons, il se rend ï¿½ l'entrepot pour se rï¿½approvisionner avant de reprendre sa ronde
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -79,7 +78,7 @@ public class ChefDeRayon extends Thread  {
 		for(int i = 0, t = listeRayons.size(); i < t; i = (i+1) % t) {
 			approvisionner(listeRayons.get(i));
 			if(i == t){
-				Thread.sleep(Supermarche.TPS_CR_REAPPROVISIONNEMENT);//Simule le reapprovisionnement à l'entrepot
+				Thread.sleep(Supermarche.TPS_CR_REAPPROVISIONNEMENT);//Simule le reapprovisionnement ï¿½ l'entrepot
 			}
 		}
 	}
