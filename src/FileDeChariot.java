@@ -29,7 +29,7 @@ public class FileDeChariot {
 	 * @param stock
 	 *            Nouveau stock � d�finir
 	 */
-	public void setStockDisponible(int stock) {
+	public synchronized void setStockDisponible(int stock) {
 		this.stockDisponible = stock;
 	}
 
@@ -38,7 +38,7 @@ public class FileDeChariot {
 	 * 
 	 * @return Stock de chariot
 	 */
-	public int getStockDisponible() {
+	public synchronized int getStockDisponible() {
 		return stockDisponible;
 	}
 
@@ -70,7 +70,7 @@ public class FileDeChariot {
 	/**
 	 * Affiche l'etat du stock de la file de chariot
 	 */
-	public void afficher(String action) {
+	public synchronized void afficher(String action) {
 		System.out.println(Thread.currentThread().getName() + ": "+ action + " sur la file de chariots, stock disponible: "
 				+ stockDisponible + " chariot(s).");
 	}
