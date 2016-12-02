@@ -46,7 +46,7 @@ public class Rayon {
 	/**
 	 * @return La quantit� maximal d'exemplaire possible sur ce rayon
 	 */
-	public int getCapacite() {
+	public synchronized int getCapacite() {
 		return this.capacite;
 	}
 
@@ -55,7 +55,7 @@ public class Rayon {
 	 * 
 	 * @return Stock de produit disponible
 	 */
-	public int getStockDisponible() {
+	public synchronized int getStockDisponible() {
 		return stockDisponible;
 	}
 	
@@ -99,7 +99,7 @@ public class Rayon {
 	/**
 	 * Affiche l'etat du stock de produit du rayon
 	 */
-	public void afficher(String action) {
+	public synchronized void afficher(String action) {
 		System.out.println(Thread.currentThread().getName() + ": " + action + " sur le rayon " + produit
 				+ ", il contient " + stockDisponible + " produit(s)");
 	}
