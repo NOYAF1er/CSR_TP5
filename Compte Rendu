@@ -11,6 +11,7 @@ THREADS
 PARTAGES
 	FileDeChariot (stock de chariot)
 	Rayon (stock de produit)
+	Caisse (tapis)
 
 ENUMERATION
 	Produits
