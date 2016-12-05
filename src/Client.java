@@ -5,69 +5,102 @@ import java.util.Random;
 
 /**
  * Classe Client
- * 
- * Permet ï¿½ un client de faire ses courses en magasin en lui permettant
- * d'emprunter et restituer un chariot dans une file de chariots
- * d'avoir une liste de courses contenant les produits et la quantitï¿½ souhaitï¿½
- * 
+ * <p>
+ * Recupère un chariot dans une file de chariot dès que possible puis parcours
+ * l'ensemble des rayons afin de recupérer les produits correspondants à sa liste
+ * de courses enfin passe à la caisse afin de faire enregistrer ses produits et
+ * effectuer le reglement
+ * </p>
  * 
  * @author Yannick N'GUESSAN
  * @author Christian ADANE
+ * 
+ *@see Thread
  *
  */
 public class Client extends Thread {
-	/** Liste de courses contenant les produits et leurs quantitï¿½s */
+	/** 
+	 * Liste de courses contenant les produits et leurs quantités 
+	 * 
+	 * @see Client#Client(FileDeChariot, List, Caisse)
+	 * @see Client#setListeDeCourses()
+	 * @see Client#setListeDeCourses(Map)
+	 * @see Client#prendreProduits(Rayon)
+	 * @see Client#passerAlaCaisse()
+	 */
 	Map<Produits, Integer> listeDeCourses;
 	
-	/** File de chariot du supermarchï¿½ */
+	/** 
+	 * File de chariot du supermarché
+	 * 
+	 * @see Client#Client(FileDeChariot, List, Caisse)
+	 * @see Client#emprunterChariot()
+	 * @see Client#restituerChariot()
+	 *  
+	 */
 	FileDeChariot fileDeChariot;
 	
-	/** Liste des rayons du supermarchï¿½ */
+	/** 
+	 * Liste des rayons du supermarché
+	 * 
+	 *  @see Client#Client(FileDeChariot, List, Caisse)
+	 *  @see Client#run()
+	 */
 	List<Rayon> listeRayons;
 	
-	/** Caisse oÃ¹ se diriger pour le paiement */
+	/** 
+	 * Caisse du supermarché 
+	 * 
+	 * @see Client#Client(FileDeChariot, List, Caisse)
+	 * @see Client#passerAlaCaisse()
+	 */
 	Caisse caisse;
-	
-	/** Les ï¿½tats du client */
-	String etat;
 	
 	/**
 	 * Constructeur
-	 * Dï¿½finit 
-	 * une liste de courses, 
-	 * un file de chariot,
-	 * une liste de rayon
+	 * 
+	 * <ul>
+	 * Fixe:
+	 * 	<li>la liste de course</li>
+	 * 	<li>la file de chariot</li>
+	 * 	<li>la liste de rayon</li>
+	 * 	<li>la caisse</li>
+	 * </ul>
 	 * 
 	 * @param fileDeChariot
 	 * @param listeRayons
+	 * @param caisse
+	 * 
+	 * @see FileDeChariot
+	 * @see List
+	 * @see Rayon
+	 * @see Caisse
 	 */
 	public Client(FileDeChariot fileDeChariot, List<Rayon> listeRayon, Caisse caisse) {
 		this.fileDeChariot = fileDeChariot;
 		this.listeRayons = listeRayon;
 		this.caisse = caisse;
-		this.etat = "INITIALISATION";
 		
 		this.listeDeCourses = new HashMap<>();
 		this.setListeDeCourses();
 	}
 	
-	/**
-	 * Dï¿½roulement du thread
-	 * Emprunte un chariot
-	 * Parcours tous les rayons pour recupï¿½rer les produits de sa liste de courses
-	 * Restitue le chariot
+	/** 
+	 * File de déroulement du thread
+	 * <ol>
+		 * <li>Emprunte un chariot</li>
+		 * <li>Parcours tous les rayons pour recupérer les produits de sa liste de courses</li>
+		 * <li>Passe à la caisse afin de faire enregistrer ses produits et effectuer le règlement</li>
+		 * <li>Restitue le chariot</li>
+	 * </ol>
 	 */
 	public void run() {
 		try {
-			etat = "ATTENTE_CHARIOT";
-			
 			//Emprunt d'un chariot
 			this.emprunterChariot();
 			
 			//Parcours des rayons
-			etat = "EN_COURSE";
 			for(Rayon rayon: listeRayons){
-				etat = "ATTENTE_PRODUIT";
 				prendreProduits(rayon);
 				Thread.sleep(Supermarche.TPS_MARCHE_CLT); // Simule le temps de marche entre les rayons
 			}
@@ -83,7 +116,9 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Dï¿½finit une liste de courses de faï¿½on alï¿½atoire
+	 * Définit une liste de courses de façon aléatoire
+	 * 
+	 * @see Client#Client(FileDeChariot, List, Caisse)
 	 */
 	public void setListeDeCourses(){
 		Random rd = new Random();
@@ -95,8 +130,12 @@ public class Client extends Thread {
 	}
 	
 	/**
-	 * Dï¿½finit une liste de courses ï¿½ partir de celle indiquï¿½
+	 * Définit une liste de courses à partir de celle indiqué
+	 * 
 	 * @param listeDeCourses Liste de courses
+	 * @see Map
+	 * @see Produits
+	 * @see Integer
 	 */
 	public void setListeDeCourses(Map<Produits, Integer> listeDeCourses){
 		this.listeDeCourses = listeDeCourses;
@@ -106,6 +145,7 @@ public class Client extends Thread {
 	 * Emprunte un chariot dans la file de chariot
 	 * 
 	 * @throws InterruptedException
+	 * @see Client#run()
 	 */
 	public void emprunterChariot() throws InterruptedException {
 		fileDeChariot.deStocker();
