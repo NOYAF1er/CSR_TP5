@@ -16,7 +16,33 @@ PARTAGES
 ENUMERATION
 	Produits
 
+II/ LISTE DES MOTIFS D'EXCLUSION, PROBLEMES DE SYNCHRO ET SOLUTIONS
+
+CAISSE:
+
+-Ajout et/ou retrait simultané de produits sur le tapis.
+*Méthode d'ajout et de retrait de produit atomique (synchronized) : sûreté
+
+-Resté bloqué en attente alors que le tapis est vide (ajout) ou alors que le tapis contient au moins un produit (retrait)
+*Après chaque action (ajout/retrait) le notifier à tous les threads endormis (notifyAll): Vivacité
+
+-Reglement avant que le tapis ne sois vide (Problème de rendez-vous)
+*Vérifier que le tapis est vide avant de faire le règlement
+
+FILE DE CHARIOT
+
+-Ajout et/ou retrait simultané de chariot dans le stock de chariot
+*Sûreté (voir caisse)
+
+-Resté bloqué en attente de chariot alors qu'il y en a de disponible
+-Après restitution d'un chariot, le notifier à tous les threads en attente (notifyAll): Vivacité
+
+RAYON
+
+-Ajout et/ou retrait simultané de produits du rayon.
+*Sûreté (voir caisse)
+
+-Resté bloqué en attente alors que le rayon contient au moins un produit (retrait)
+*Après chaque ajout de produit, le notifier aux threads en attente: Sûreté
 
 
-
-II/ 
